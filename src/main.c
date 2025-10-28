@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include "term.h"
+#include "display.h"
 
 int main(int argc, char *argv[]) {
 	
@@ -10,6 +11,13 @@ int main(int argc, char *argv[]) {
 	t.previous = t.current;
 
 	term_uncook(&t);
+	
+	scr *s;
+	initscr(&s);
+
+	lsdir(s, ".");
+	getchar();
+
 	term_revert(&t);
 	return 0;
 }

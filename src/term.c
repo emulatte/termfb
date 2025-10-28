@@ -15,17 +15,19 @@ void term_uncook(Term *p_term){
 	cur->c_cc[VMIN] = 1;
 	cur->c_cc[VTIME] = 0;
 	
-	tcsetattr(STDIN_FILENO, TCSANOW, cur);
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, cur);
 
 	printf("\x1b[?25l"); // hide cursor
 	printf("\x1b[s"); // save cursor pos
 	printf("\x1b[?47h"); // save screen
 	printf("\x1b[?1049h"); // alt buff
+	
 }
 
 void term_revert(Term *p_term) {
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &p_term->previous);
-
+	
+	printf("\033[3J"); // Clear alt buff
 	printf("\x1b[?1049l"); // return buff
 	printf("\x1b[?47l"); // restore screen
 	printf("\x1b[u"); // restore cursor position
