@@ -62,6 +62,13 @@ void shscr(term *t, scr *s) {
 void mvscr(scr *s, int offset) {
 	if (s->o + offset >= 0) {
 		s->o += offset;
+	
+		// skip /n's
+		if (offset > 0) {
+			s->o+= countnl(s->buff[s->o]);
+		} else {
+			s->o-= countnl(s->buff[s->o]);
+		}
 	}
 }
 

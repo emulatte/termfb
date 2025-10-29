@@ -21,8 +21,7 @@ char handleinput(term *t, scr *s, char in) {
 			break;
 	}
 
-	cursync(t);
-
+	shscr(t, s);
 	return in;
 }
 
@@ -32,11 +31,19 @@ void handlemove(term *t, scr *s, char direc) {
 			if (t->cury -1 >= 0) {
 				t->cury-=1;
 			}
+
+			if (t->cury == 0 && s->o > 0) {
+				mvscr(s, -1);
+			}
 			break;
 
 		case MV_DOWN:
 			if (t->cury + 1 < s->h) { 
 				t->cury+=1;
+			}
+
+			if (t->cury + 1 == s->h && s->o <= s->buffc) {
+				mvscr(s, 1);
 			}
 			break;
 
