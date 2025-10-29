@@ -5,17 +5,18 @@
 #include <string.h>
 #include <sys/ioctl.h>
 #include "display.h"
+#include "term.h"
 
-void lsdir(scr *s, char *dir) {
+void lsdir(term *t, scr *s, char *dir) {
 	DIR *ldir = opendir(dir);
 
 	struct dirent *curdir;
 	while ((curdir = readdir(ldir)) != NULL) {
-		inscr(s, curdir->d_name, strlen(curdir->d_name));
-		inscr(s, "\n\r", strlen("\n\r"));
+		inscr(s, curdir->d_name);
+		inscr(s, "\n\r");
 	}
 
-	shscr(s);
+	shscr(t, s);
 }
 
 void initscr(scr **s) {
@@ -33,15 +34,39 @@ void updim(scr *s) {
 	s->h = w.ws_row;
 }
 
-void shscr(scr *s) {
-	printf("\033[H");	
-	for (int i = 0; i < s->buffc; i++) {
-		printf(s->buff[i]);
+int countnl(char *ca) {
+	int i = 0;
+	int nlc = 0;
+	while (ca[i] != '\0') {
+		if (ca[i] == '\n') {
+			nlc += 1;
+		}
+		i++;
 	}
-	
+
+	return nlc;
 }
 
-void inscr(scr *s, char *in, int inc) {
+void shscr(term *t, scr *s) {
+	int nlc = 0;
+	
+	printf("\033[3J\033[H");
+	for (int i = s->o; i < s->buffc && nlc < s->h; i++) {
+		printf(s->buff[i]);
+		nlc += countnl(s->buff[i]);
+	}
+
+	cursync(t);	
+}
+
+void mvscr(scr *s, int offset) {
+	if (s->o + offset >= 0) {
+		s->o += offset;
+	}
+}
+
+void inscr(scr *s, char *in) {
+	int inc = strlen(in);
 	if (s->buffc == 0) {
 		s->buff[0] = malloc(sizeof(inc) + 1);
 		s->buff[0][inc] = '\0';
@@ -54,5 +79,3 @@ void inscr(scr *s, char *in, int inc) {
 	memcpy(s->buff[s->buffc], in, inc);	
 	s->buffc += 1;
 }
-
-
