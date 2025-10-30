@@ -16,34 +16,7 @@ int main(int argc, char *argv[]) {
 	scr *s;
 	initscr(&s);
 
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
-	lsdir(&t, s, ".");
+	lsdir(&t, s, "/home/tristan/");
 
 	char c = ' ';
 	while (c = handleinput(&t, s, getinput())) {

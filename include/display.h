@@ -21,5 +21,6 @@ void clscr(scr *s);
 void shscr(term *t, scr *s);
 
 int countnl(char *ca);
+void stripn(char *in, char **out);
 
 #endif

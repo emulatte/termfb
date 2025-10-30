@@ -13,7 +13,6 @@ void lsdir(term *t, scr *s, char *dir) {
 	struct dirent *curdir;
 	while ((curdir = readdir(ldir)) != NULL) {
 		inscr(s, curdir->d_name);
-		inscr(s, "\n\r");
 	}
 
 	shscr(t, s);
@@ -47,40 +46,56 @@ int countnl(char *ca) {
 	return nlc;
 }
 
-void shscr(term *t, scr *s) {
-	int nlc = 0;
-	
-	printf("\033[3J\033[H");
-	for (int i = s->o; i < s->buffc && nlc < s->h; i++) {
-		printf(s->buff[i]);
-		nlc += countnl(s->buff[i]);
-	}
+void stripn(char *in, char **out) {
+	int inc = strlen(in);
+	*out = malloc(sizeof(char)*inc);
+	*out = memcpy(*out, in, inc);
 
-	cursync(t);	
+	for (int i = 0; (*out)[i] != '\0'; i++) {
+		if ((*out)[i] == '\n') {
+			(*out)[i] = '\0';
+		}
+	}
+}
+
+void shscr(term *t, scr *s) {
+	printf("\033[3J\033[H"); // Clear screen, set cursor 0,0
+	for (int i = s->o; i < s->buffc && i - s->o < s->h ; i++) {
+		if (i - s->o == s->h - 1) {
+			// strip new line if last in term screen
+			char *stpd;
+			stripn(s->buff[i], &stpd);
+			printf(stpd);
+			free(stpd);
+		}else {
+			printf(s->buff[i]);
+		}
+	}
+	//printf("offset:%i, buffc:%i", s->o, s->buffc);
+	cursync(t); // sync cursor to user position
 }
 
 void mvscr(scr *s, int offset) {
 	if (s->o + offset >= 0) {
 		s->o += offset;
-	
-		// skip /n's
-		if (offset > 0) {
-			s->o+= countnl(s->buff[s->o]);
-		} else {
-			s->o-= countnl(s->buff[s->o]);
-		}
 	}
 }
 
 void inscr(scr *s, char *in) {
 	int inc = strlen(in);
 	if (s->buffc == 0) {
-		s->buff[0] = malloc(sizeof(inc) + 1);
-		s->buff[0][inc] = '\0';
+		s->buff[0] = malloc(sizeof(inc) + 3);
+		
+		s->buff[0][inc] = '\r';
+		s->buff[0][inc + 1] = '\n';
+		s->buff[0][inc + 2] = '\0';
 	} else {
 		s->buff = realloc(s->buff, sizeof(char*) * (s->buffc + 1));
-		s->buff[s->buffc] = malloc(sizeof(inc + 1));
-		s->buff[s->buffc][inc] = '\0';
+		s->buff[s->buffc] = malloc(sizeof(inc + 3));
+
+		s->buff[s->buffc][inc] = '\r';
+		s->buff[s->buffc][inc + 1] = '\n';
+		s->buff[s->buffc][inc + 2] = '\0';
 	}
 
 	memcpy(s->buff[s->buffc], in, inc);	

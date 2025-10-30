@@ -28,22 +28,22 @@ char handleinput(term *t, scr *s, char in) {
 void handlemove(term *t, scr *s, char direc) {
 	switch(direc) {
 		case MV_UP:
-			if (t->cury -1 >= 0) {
-				t->cury-=1;
+			if (t->cury -1 == -1 && s->o > 0) {
+				mvscr(s, -1);
 			}
 
-			if (t->cury == 0 && s->o > 0) {
-				mvscr(s, -1);
+			if (t->cury -1 >= 0) {
+				t->cury-=1;
 			}
 			break;
 
 		case MV_DOWN:
-			if (t->cury + 1 < s->h) { 
-				t->cury+=1;
+			if (t->cury + 1 == s->h && s->o < s->buffc - s->h) {
+				mvscr(s, 1);
 			}
 
-			if (t->cury + 1 == s->h && s->o <= s->buffc) {
-				mvscr(s, 1);
+			if (t->cury + 1 < s->h) { 
+				t->cury+=1;
 			}
 			break;
 
