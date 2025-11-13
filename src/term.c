@@ -15,13 +15,15 @@ void term_uncook(term *p_term){
 	cur->c_cc[VMIN] = 1;
 	cur->c_cc[VTIME] = 0;
 	
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, cur);
+	tcsetattr(STDIN_FILENO, TCSANOW, cur);
 
 	//printf("\x1b[?25l"); // hide cursor
 	printf("\x1b[s"); // save cursor pos
 	printf("\x1b[?47h"); // save screen
 	printf("\x1b[?1049h"); // alt buff
-	
+				
+	// Disable Buffering for stdio
+	setbuf(stdout, NULL); 
 }
 
 void term_revert(term *p_term) {

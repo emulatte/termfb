@@ -47,10 +47,9 @@ int countnl(char *ca) {
 }
 
 void stripn(char *in, char **out) {
-	int inc = strlen(in);
-	*out = malloc(sizeof(char)*inc);
+	int inc = strlen(in) + 1;
+	*out = malloc(inc);
 	*out = memcpy(*out, in, inc);
-
 	for (int i = 0; (*out)[i] != '\0'; i++) {
 		if ((*out)[i] == '\n') {
 			(*out)[i] = '\0';
@@ -71,8 +70,7 @@ void shscr(term *t, scr *s) {
 			printf(s->buff[i]);
 		}
 	}
-	//printf("offset:%i, buffc:%i", s->o, s->buffc);
-	cursync(t); // sync cursor to user position
+	cursync(t); // sync cursor to user position	
 }
 
 void mvscr(scr *s, int offset) {
@@ -84,14 +82,14 @@ void mvscr(scr *s, int offset) {
 void inscr(scr *s, char *in) {
 	int inc = strlen(in);
 	if (s->buffc == 0) {
-		s->buff[0] = malloc(sizeof(inc) + 3);
+		s->buff[0] = malloc(inc + 3);
 		
 		s->buff[0][inc] = '\r';
 		s->buff[0][inc + 1] = '\n';
 		s->buff[0][inc + 2] = '\0';
 	} else {
 		s->buff = realloc(s->buff, sizeof(char*) * (s->buffc + 1));
-		s->buff[s->buffc] = malloc(sizeof(inc + 3));
+		s->buff[s->buffc] = malloc(inc + 3);
 
 		s->buff[s->buffc][inc] = '\r';
 		s->buff[s->buffc][inc + 1] = '\n';
