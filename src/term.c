@@ -1,7 +1,16 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <termios.h>
 #include "term.h"
+
+void initterm(term **t) {
+	*t = malloc(sizeof(term));
+	term *te = *t;
+	tcgetattr(STDIN_FILENO, &te->current);
+	te->previous = te->current;
+	te->curd = NULL;
+}
 
 void term_uncook(term *p_term){
 
@@ -28,7 +37,7 @@ void term_uncook(term *p_term){
 
 void term_revert(term *p_term) {
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &p_term->previous);
-	
+
 	printf("\033[3J"); // Clear alt buff
 	printf("\x1b[?1049l"); // return buff
 	printf("\x1b[?47l"); // restore screen
@@ -38,4 +47,7 @@ void term_revert(term *p_term) {
 
 void cursync(term *t) {
 	printf("\033[%i;%iH", t->cury+1, t->curx+1);
+}
+
+void updcurd(term *t, char *dir) {
 }

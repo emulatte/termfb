@@ -12,6 +12,7 @@ typedef struct {
 } scr;
 
 void lsdir(term *t, scr *s, char *dir);
+void updftr(term *t, scr *s);
 
 void initscr(scr **s);
 void updim(scr *s);

@@ -18,6 +18,10 @@ void lsdir(term *t, scr *s, char *dir) {
 	shscr(t, s);
 }
 
+void updftr(term *t, scr *s) {
+	
+}
+
 void initscr(scr **s) {
 	*s = malloc(sizeof (scr));
 	(*s)->buffc = 0;

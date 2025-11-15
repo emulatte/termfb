@@ -7,25 +7,24 @@
 
 int main(int argc, char *argv[]) {
 
-	term t = {0};
-	tcgetattr(STDIN_FILENO, &t.current);
-	t.previous = t.current;
+	term *t;
+	initterm(&t);
 
-	term_uncook(&t);
+	term_uncook(t);
 
 	scr *s;
 	initscr(&s);
 
-	lsdir(&t, s, "/home/tristan/.config/");
+	lsdir(t, s, "/home/tristan/.config/");
 
 	char c = ' ';
-	while (c = handleinput(&t, s, getinput())) {
+	while (c = handleinput(t, s, getinput())) {
 		if (c == QUIT_TFB) {
 			break;
 		}
 	}
 	
-	term_revert(&t);
+	term_revert(t);
 
 	return 0;
 }
