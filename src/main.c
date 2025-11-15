@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 	scr *s;
 	initscr(&s);
 
-	lsdir(&t, s, "/home/tristan/.config");
+	lsdir(&t, s, "/home/tristan/.config/");
 
 	char c = ' ';
 	while (c = handleinput(&t, s, getinput())) {

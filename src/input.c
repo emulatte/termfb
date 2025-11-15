@@ -38,11 +38,11 @@ void handlemove(term *t, scr *s, char direc) {
 			break;
 
 		case MV_DOWN:
-			if (t->cury + 1 == s->h && s->o < s->buffc - s->h) {
+			if (t->cury + 2 == s->h && s->o < s->buffc - s->h) {
 				mvscr(s, 1);
 			}
 
-			if (t->cury + 1 < s->h) { 
+			if (t->cury + 1 < s->h - 1 && t->cury + 1 < s->buffc) { 
 				t->cury+=1;
 			}
 			break;

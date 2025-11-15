@@ -60,7 +60,7 @@ void stripn(char *in, char **out) {
 void shscr(term *t, scr *s) {
 	printf("\033[3J\033[H"); // Clear screen, set cursor 0,0
 	for (int i = s->o; i < s->buffc && i - s->o < s->h ; i++) {
-		if (i - s->o == s->h - 1) {
+		if (i - s->o == s->h - 2) {
 			// strip new line if last in term screen
 			char *stpd;
 			stripn(s->buff[i], &stpd);
