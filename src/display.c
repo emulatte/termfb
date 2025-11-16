@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <sys/stat.h>
 #include "display.h"
 #include "term.h"
 
@@ -21,12 +22,18 @@ void lsdir(term *t, scr *s, char *dir) {
 void updftr(term *t, scr *s) {
 	int sx = s->w;
 	int sy = s->h;
-	
-	// We want current directory in the footer. Also the currently select file's inode type		
-		
-	
-	int fslen = strlen(t->curd);
 
+	struct stat sbuff;
+	int si = t->cury + s->o; // y + offset
+
+	stat("", &sbuff);
+
+	int fslen = strlen(t->curd)+30;
+	
+	// You are here; we want to print out the type of inode object. Some revalations:
+	// We need to have a buffer of directories for term, not just screen.
+	// The term buffer should include absolute path. This, however, does taint term with data
+	// that doesn't feel related. It is time for perhaps a fb struct.
 	printf("\033[%i;%iH%s", sy, sx - fslen + 1, t->curd);
 
 }
