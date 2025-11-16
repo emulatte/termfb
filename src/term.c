@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <termios.h>
+#include <string.h>
 #include "term.h"
 
 void initterm(term **t) {
@@ -9,7 +10,9 @@ void initterm(term **t) {
 	term *te = *t;
 	tcgetattr(STDIN_FILENO, &te->current);
 	te->previous = te->current;
-	te->curd = NULL;
+
+	te->curd = malloc(sizeof(char)*255); // future: set this to be system expected max
+	updcurd(te, NULL);	
 }
 
 void term_uncook(term *p_term){
@@ -50,4 +53,9 @@ void cursync(term *t) {
 }
 
 void updcurd(term *t, char *dir) {
+	if (dir == NULL) {
+		getcwd(t->curd, sizeof(char)*255); // again, 255 should change to system max
+	} else {
+		t->curd = memcpy(t->curd, dir, strlen(dir));
+	}
 }

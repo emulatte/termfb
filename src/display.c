@@ -19,7 +19,16 @@ void lsdir(term *t, scr *s, char *dir) {
 }
 
 void updftr(term *t, scr *s) {
+	int sx = s->w;
+	int sy = s->h;
 	
+	// We want current directory in the footer. Also the currently select file's inode type		
+		
+	
+	int fslen = strlen(t->curd);
+
+	printf("\033[%i;%iH%s", sy, sx - fslen + 1, t->curd);
+
 }
 
 void initscr(scr **s) {
@@ -74,7 +83,8 @@ void shscr(term *t, scr *s) {
 			printf(s->buff[i]);
 		}
 	}
-	cursync(t); // sync cursor to user position	
+	updftr(t, s);
+	cursync(t);
 }
 
 void mvscr(scr *s, int offset) {
