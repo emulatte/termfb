@@ -30,10 +30,6 @@ void updftr(term *t, scr *s) {
 
 	int fslen = strlen(t->curd)+30;
 	
-	// You are here; we want to print out the type of inode object. Some revalations:
-	// We need to have a buffer of directories for term, not just screen.
-	// The term buffer should include absolute path. This, however, does taint term with data
-	// that doesn't feel related. It is time for perhaps a fb struct.
 	printf("\033[%i;%iH%s", sy, sx - fslen + 1, t->curd);
 
 }
