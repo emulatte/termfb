@@ -9,13 +9,11 @@
 #include "term.h"
 
 void lsdir(term *t, scr *s, char *dir) {
-	DIR *ldir = opendir(dir);
-
-	struct dirent *curdir;
-	while ((curdir = readdir(ldir)) != NULL) {
-		inscr(s, curdir->d_name);
+	struct dirent **dirs;
+	int result = scandir(dir, &dirs, NULL, alphasort);
+	for (int i = 0; i < result; i++) {
+		inscr(s, dirs[i]->d_name);
 	}
-
 	shscr(t, s);
 }
 
