@@ -12,14 +12,14 @@ typedef struct {
 } scr;
 
 void lsdir(term *t, scr *s, char *dir);
-void updftr(term *t, scr *s);
+void updftr(term *t, scr *s, char *fstr);
 
 void initscr(scr **s);
 void updim(scr *s);
 void inscr(scr *s, char *in);
 void mvscr(scr *s, int offset); 
 void clscr(scr *s);
-void shscr(term *t, scr *s);
+void shscr(term *t, scr *s, char *fstr);
 
 int countnl(char *ca);
 void stripn(char *in, char **out);

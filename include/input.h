@@ -1,5 +1,6 @@
 #ifndef __INPUT__
 #define __INPUT__
+
 #include "display.h"
 #include "term.h"
 

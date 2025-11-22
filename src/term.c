@@ -11,8 +11,6 @@ void initterm(term **t) {
 	tcgetattr(STDIN_FILENO, &te->current);
 	te->previous = te->current;
 
-	te->curd = malloc(sizeof(char)*255); // future: set this to be system expected max
-	updcurd(te, NULL);	
 }
 
 void term_uncook(term *p_term){
@@ -50,12 +48,4 @@ void term_revert(term *p_term) {
 
 void cursync(term *t) {
 	printf("\033[%i;%iH", t->cury+1, t->curx+1);
-}
-
-void updcurd(term *t, char *dir) {
-	if (dir == NULL) {
-		getcwd(t->curd, sizeof(char)*255); // again, 255 should change to system max
-	} else {
-		t->curd = memcpy(t->curd, dir, strlen(dir));
-	}
 }

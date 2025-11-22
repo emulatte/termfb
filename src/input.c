@@ -21,7 +21,6 @@ char handleinput(term *t, scr *s, char in) {
 			break;
 	}
 
-	shscr(t, s);
 	return in;
 }
 

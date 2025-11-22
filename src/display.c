@@ -14,10 +14,9 @@ void lsdir(term *t, scr *s, char *dir) {
 	for (int i = 0; i < result; i++) {
 		inscr(s, dirs[i]->d_name);
 	}
-	shscr(t, s);
 }
 
-void updftr(term *t, scr *s) {
+void updftr(term *t, scr *s, char *fstr) {
 	int sx = s->w;
 	int sy = s->h;
 
@@ -26,9 +25,9 @@ void updftr(term *t, scr *s) {
 
 	stat("", &sbuff);
 
-	int fslen = strlen(t->curd)+30;
+	int fslen = strlen(fstr);
 	
-	printf("\033[%i;%iH%s", sy, sx - fslen + 1, t->curd);
+	printf("\033[%i;%iH%s", sy, sx - fslen + 1, fstr);
 
 }
 
@@ -71,7 +70,7 @@ void stripn(char *in, char **out) {
 	}
 }
 
-void shscr(term *t, scr *s) {
+void shscr(term *t, scr *s, char *fstr) {
 	printf("\033[3J\033[H"); // Clear screen, set cursor 0,0
 	for (int i = s->o; i < s->buffc && i - s->o < s->h ; i++) {
 		if (i - s->o == s->h - 2) {
@@ -84,9 +83,12 @@ void shscr(term *t, scr *s) {
 			printf(s->buff[i]);
 		}
 	}
-	updftr(t, s);
+	
+	updftr(t, s, fstr);
 	cursync(t);
 }
+
+
 
 void mvscr(scr *s, int offset) {
 	if (s->o + offset >= 0) {
