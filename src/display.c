@@ -88,7 +88,13 @@ void shscr(term *t, scr *s, char *fstr) {
 	cursync(t);
 }
 
+void clscr(scr *s) {
+	for (int i = 0; i < s->buffc; i++) {
+		free(s->buff[i]);
+	}
 
+	s->buffc = 0;
+}
 
 void mvscr(scr *s, int offset) {
 	if (s->o + offset >= 0) {

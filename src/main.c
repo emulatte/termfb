@@ -11,19 +11,14 @@ int main(int argc, char *argv[]) {
 	fb *f;
 	initfb(&f);
 	
-	chgdir(f, "/home/tristan/Test");
-	chgdir(f, "..");
-	chgdir(f, "Test");
-	chgdir(f, "/etc");
-	char c = ' ';
-
-
 	lsdir(f->t, f->s, f->curdir);
+	shscr(f->t, f->s, f->curdir);
+
+	char c = ' ';
 	while (c = handleinput(f->t, f->s, getinput())) {
 		if (c == QUIT_TFB) {
 			break;
 		}
-
 
 		shscr(f->t, f->s, f->curdir);
 	}
