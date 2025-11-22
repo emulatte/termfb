@@ -4,7 +4,6 @@
 #include <dirent.h>
 #include <string.h>
 #include <sys/ioctl.h>
-#include <sys/stat.h>
 #include "display.h"
 #include "term.h"
 
@@ -20,15 +19,9 @@ void updftr(term *t, scr *s, char *fstr) {
 	int sx = s->w;
 	int sy = s->h;
 
-	struct stat sbuff;
 	int si = t->cury + s->o; // y + offset
-
-	stat("", &sbuff);
-
 	int fslen = strlen(fstr);
-	
 	printf("\033[%i;%iH%s", sy, sx - fslen + 1, fstr);
-
 }
 
 void initscr(scr **s) {

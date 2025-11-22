@@ -2,12 +2,12 @@
 #include <unistd.h>
 #include <termios.h>
 #include "fb.h"
+#include "file.h"
 #include "input.h"
 #include "term.h"
 #include "display.h"
 
 int main(int argc, char *argv[]) {
-
 	fb *f;
 	initfb(&f);
 	
@@ -15,12 +15,17 @@ int main(int argc, char *argv[]) {
 	shscr(f->t, f->s, f->curdir);
 
 	char c = ' ';
-	while (c = handleinput(f->t, f->s, getinput())) {
+	while (c = handleinput(f, getinput())) {
 		if (c == QUIT_TFB) {
 			break;
 		}
 
+		clscr(f->s);
+
+		lsdir(f->t, f->s, f->curdir);
+		updcursel(f);
 		shscr(f->t, f->s, f->curdir);
+
 	}
 
 	term_revert(f->t);
