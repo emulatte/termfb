@@ -1,5 +1,12 @@
+CC = gcc
+SRCDIR = src
+SRC = $(wildcard $(SRCDIR)/*)
+INCDIR = include
+BINDIR = bin
+BIN = termfb
+
 default:
-	gcc -o bin/termfb -Iinclude src/main.c src/display.c src/input.c src/term.c src/fb.c && bin/termfb
+	$(CC) $(SRC) -o $(BINDIR)/$(BIN) -I$(INCDIR) 
 
 debug:
-	gcc -g -o bin/termfb -Iinclude src/main.c src/display.c src/term.c src/input.c src/fb.c && gdb bin/termfb
+	$(CC) -g -o $(BINDIR)/debug_$(BIN) -I$(INCDIR) $(SRC)
