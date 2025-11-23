@@ -10,7 +10,8 @@
 void lsdir(term *t, scr *s, char *dir) {
 	struct dirent **dirs;
 	int result = scandir(dir, &dirs, NULL, alphasort);
-	for (int i = 0; i < result; i++) {
+	for (int i = 1; i < result; i++) { // i = 1, skipp '.'
+		
 		inscr(s, dirs[i]->d_name);
 	}
 }

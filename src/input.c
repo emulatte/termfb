@@ -39,6 +39,8 @@ void handlesel(fb *f) {
 
 	if (getntype(abs) == S_IFDIR) { 
 		chgdir(f, f->cursel);
+	} else {
+		openapp(abs);
 	}
 }
 
