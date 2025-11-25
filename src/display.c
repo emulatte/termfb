@@ -6,13 +6,15 @@
 #include <sys/ioctl.h>
 #include "display.h"
 #include "term.h"
+#include "file.h"
 
+
+// Your next goal is to colorize dirs. After that, consider coloring +x
 void lsdir(term *t, scr *s, char *dir) {
-	struct dirent **dirs;
-	int result = scandir(dir, &dirs, NULL, alphasort);
-	for (int i = 1; i < result; i++) { // i = 1, skipp '.'
-		
-		inscr(s, dirs[i]->d_name);
+	struct dirent **nodes;
+	int result = scandir(dir, &nodes, NULL, alphasort);
+	for (int i = 1; i < result; i++) { // i = 1, skip '.'
+		inscr(s, nodes[i]->d_name);
 	}
 }
 
