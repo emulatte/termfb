@@ -67,10 +67,11 @@ void handlemove(fb *f, char direc) {
 			break;
 
 		case MV_LEFT:
+			chgdir(f, "..");
 			break;
 
 		case MV_RIGHT:
-			break;
+			chgdir(f, f->cursel);
 	}
 } 
 
