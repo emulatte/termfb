@@ -20,7 +20,7 @@ char handleinput(fb *f, char in) {
 			handlemove(f, MV_LEFT);
 			break;
 		case MV_RIGHT:
-			handlemove(f, MV_RIGHT);
+			handlesel(f);
 			break;
 		case SL_ENTER:
 			handlesel(f);
@@ -69,9 +69,6 @@ void handlemove(fb *f, char direc) {
 		case MV_LEFT:
 			chgdir(f, "..");
 			break;
-
-		case MV_RIGHT:
-			chgdir(f, f->cursel);
 	}
 } 
 
