@@ -11,7 +11,6 @@ typedef struct {
 	char **buff;
 } scr;
 
-void lsdir(term *t, scr *s, char *dir);
 void updftr(term *t, scr *s, char *fstr);
 
 void initscr(scr **s);

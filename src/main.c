@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 	fb *f;
 	initfb(&f);
 	
-	lsdir(f->t, f->s, f->curdir);
+	lsdir(f, f->curdir);
 	shscr(f->t, f->s, f->curdir);
 
 	char c = ' ';
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 
 		clscr(f->s);
 
-		lsdir(f->t, f->s, f->curdir);
+		lsdir(f, f->curdir);
 		updcursel(f);
 		shscr(f->t, f->s, f->curdir);
 
