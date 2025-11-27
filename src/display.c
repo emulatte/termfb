@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <sys/stat.h>
 #include "display.h"
 #include "term.h"
 #include "file.h"
@@ -72,6 +73,17 @@ void shscr(term *t, scr *s, char *fstr) {
 	
 	updftr(t, s, fstr);
 	cursync(t);
+}
+
+void colorstr(char *istr, char **ostr, int type) {
+	
+	if (type == S_IFDIR) {
+		*ostr = malloc(strlen(istr) + strlen(CL_FGBLUE) + strlen(CL_RESET) + 1);
+		strcpy(*ostr, CL_FGBLUE);
+		strcpy(*ostr + strlen(*ostr), istr);
+		strcpy(*ostr + strlen(*ostr), CL_RESET);
+	}
+
 }
 
 void clscr(scr *s) {
