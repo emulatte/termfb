@@ -8,9 +8,17 @@
 #include "display.h"
 
 int main(int argc, char *argv[]) {
+
 	fb *f;
-	initfb(&f);
+
+	if (argc > 1) {
+		initfb(&f, argv[1]);
 	
+	} else {
+		initfb(&f, NULL);
+	}
+
+
 	lsdir(f, f->curdir);
 	shscr(f->t, f->s, f->curdir);
 
