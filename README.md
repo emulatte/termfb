@@ -1,1 +1,1 @@
-A terminal file browser written in C.
+A terminal file browser.
