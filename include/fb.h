@@ -21,7 +21,7 @@ void updcurdir(fb *, char *);
 void updcursel(fb *);
 void updwrkdir(fb *, char *);
 
-void lsdir(fb *, char *);
+void lscurdir(fb *);
 
 void chgdir(fb *, char *);
 

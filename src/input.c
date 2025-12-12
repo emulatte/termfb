@@ -32,15 +32,11 @@ char handleinput(fb *f, char in) {
 }
 
 void handlesel(fb *f) {
-	char abs[PATH_MAX];
-	strcpy(abs, f->curdir);
-	strcpy(abs+strlen(abs),"/");
-	strcpy(abs+strlen(abs), f->cursel);
 
-	if (getntype(abs) == S_IFDIR) { 
+	if (getntype(f->cursel) == S_IFDIR) { 
 		chgdir(f, f->cursel);
 	} else {
-		openapp(abs);
+		openapp(f->cursel);
 	}
 }
 

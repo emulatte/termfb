@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 	}
 
 
-	lsdir(f, f->curdir);
+	lscurdir(f);
 	shscr(f->t, f->s, f->curdir);
 
 	char c = ' ';
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 
 		clscr(f->s);
 
-		lsdir(f, f->curdir);
+		lscurdir(f);
 		updcursel(f);
 		shscr(f->t, f->s, f->curdir);
 

@@ -38,13 +38,13 @@ void initfb(fb **f, char *path) {
 }
 
 void upddbuff(fb *f, char *path) {
-	struct dirent **dirs;
+	char **dirs;
 
-	f->dirbuffc = scandir(path, &dirs, NULL, alphasort) - 1; // -1 to omit '.'
+	f->dirbuffc = absscandir(path, &dirs, alphadirsort) - 1; // -1 to omit '.'
 	f->dirbuff = realloc(f->dirbuff, f->dirbuffc * sizeof(char*));
 
 	for (int i = 0; i < f->dirbuffc; i++) {
-		f->dirbuff[i] = dirs[i+1]->d_name; // i+1 to omit '.'
+		f->dirbuff[i] = dirs[i+1]; // i+1 to omit '.'
 	}
 
 	f->t->cury = 0;
@@ -63,46 +63,26 @@ void updwrkdir(fb *f, char *path) {
 }
 
 void chgdir(fb *f, char *path) {
-	if (path[0] == '/') {
-		updcurdir(f, path);
-	} else if (path[0] == '.' && path[1] == '.') {
+	if (path[strlen(path) - 1] == '.' && path[strlen(path) - 2] == '.') {
 		updcurdir(f, dirname(f->curdir));
-	} else if (path[0] == '.' && strlen(path) == 1){
+	} else if (path[strlen(path) - 1] == '.'){
+		// ignore current dir (ideally these won't be visible :)
 	} else {
-		if (strlen(f->curdir) != 1) {
-			strcpy(f->curdir + strlen(f->curdir), "/");
-		}
-		strcpy(f->curdir + strlen(f->curdir), path);
-	 }
+		updcurdir(f, path);	 
+	}
 		
 	upddbuff(f, f->curdir);
 }
 
-void lsdir(fb *f, char *dir) {
-	struct dirent **nodes;
-	int color = 0;
+void lscurdir(fb *f) {	
 	char *istr;
-	
-	char *abspth = malloc(PATH_MAX + 1);
-
-	if (dir[0] == '/') {
-		color = 1;
-	}
-
-	int result = scandir(dir, &nodes, NULL, alphasort);
-	for (int i = 1; i < result; i++) { // i = 1, skip '.'
-		if (color) {
-			strcpy(abspth, dir);
-			strcpy(abspth + strlen(abspth), "/");
-			strcpy(abspth + strlen(abspth), nodes[i]->d_name);
-		}
-
-		if (color && getntype(abspth) == S_IFDIR) {
-			colorstr(nodes[i]->d_name, &istr, S_IFDIR);
+	for (int i = 0; i < f->dirbuffc; i++) {
+		if (getntype(f->dirbuff[i]) == S_IFDIR) {
+			colorstr(basename(f->dirbuff[i]), &istr, S_IFDIR);
 		} else {
-			istr = nodes[i]->d_name;
+			istr = basename(f->dirbuff[i]);
 		}
-
 		inscr(f->s, istr);
 	}
 }
+
