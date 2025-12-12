@@ -48,6 +48,7 @@ void upddbuff(fb *f, char *path) {
 	}
 
 	f->t->cury = 0;
+	f->s->o = 0;
 }
 
 void updcurdir(fb *f, char *path) {
