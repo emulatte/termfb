@@ -9,6 +9,8 @@
 #include "display.h"
 
 char handleinput(fb *f, char in) {
+	updim(f->s);
+
 	switch(in) {
 		case MV_UP:
 			handlemove(f, MV_UP);

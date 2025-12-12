@@ -86,4 +86,3 @@ void lscurdir(fb *f) {
 		inscr(f->s, istr);
 	}
 }
-
