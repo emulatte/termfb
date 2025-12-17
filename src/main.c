@@ -10,14 +10,21 @@
 int main(int argc, char *argv[]) {
 
 	fb *f;
+	int result;
 
 	if (argc > 1) {
-		initfb(&f, argv[1]);
+		result = initfb(&f, argv[1]);
 	
 	} else {
-		initfb(&f, NULL);
+		result = initfb(&f, NULL);
 	}
 
+	if (!result) {
+		printf("Failed to initialize termfb!\n");
+		getchar();
+		term_revert(f->t);
+		return 1;
+	}
 
 	lscurdir(f);
 	shscr(f->t, f->s, f->curdir);

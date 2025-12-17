@@ -14,7 +14,7 @@ typedef struct {
 	char **dirbuff;
 } fb;
 
-void initfb(fb **, char *);
+int initfb(fb **, char *);
 
 void upddbuff(fb *, char *);
 void updcurdir(fb *, char *);
@@ -23,6 +23,6 @@ void updwrkdir(fb *, char *);
 
 void lscurdir(fb *);
 
-void chgdir(fb *, char *);
+int chgdir(fb *, char *);
 
 #endif

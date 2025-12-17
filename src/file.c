@@ -1,4 +1,6 @@
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <errno.h>
 #include <unistd.h>
 #include <string.h>
 #include <limits.h>
@@ -35,7 +37,7 @@ int alphadirsort(const void *a, const void *b) {
 
 	strcpy (abase, basename(afull));
 	strcpy (bbase, basename(bfull));
-	
+
 	// Sort based on dir -> dir alpha -> all other alpha
 	if (getntype(afull) == S_IFDIR && !(getntype(bfull) == S_IFDIR))  {
 		return 0;
@@ -52,9 +54,14 @@ int absscandir(char *abspath, char ***nodes, sortfunc sfunc) {
 	DIR *f = opendir(abspath);
 	struct dirent *de;
 	int dcnt = 0;	
-	
-	while ((de = readdir(f)) != NULL) {
+
+	while (f && (de = readdir(f))) {
 		dcnt += 1;
+	}
+
+	if (dcnt <= 0) {
+		// This means not even . or ..
+		return dcnt;
 	}
 
 	rewinddir(f);
@@ -67,11 +74,11 @@ int absscandir(char *abspath, char ***nodes, sortfunc sfunc) {
 		}
 
 		strcpy(absp + strlen(absp), de->d_name);
-		
+
 		(*nodes)[i] = malloc(strlen(absp) + 1);
 		strcpy((*nodes)[i], absp);
 	}
-	
+
 	qsort(*nodes, dcnt, sizeof(char*), alphadirsort);
 	return dcnt;
 }

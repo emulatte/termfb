@@ -83,7 +83,6 @@ void colorstr(char *istr, char **ostr, int type) {
 		strcpy(*ostr + strlen(*ostr), istr);
 		strcpy(*ostr + strlen(*ostr), CL_RESET);
 	}
-
 }
 
 void clscr(scr *s) {

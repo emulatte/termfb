@@ -11,7 +11,7 @@
 #include "fb.h"
 #include "file.h"
 
-void initfb(fb **f, char *path) {
+int initfb(fb **f, char *path) {
 	*f = malloc(sizeof(fb));
 	fb *ft = *f;
 
@@ -34,17 +34,30 @@ void initfb(fb **f, char *path) {
 	}
 
 	upddbuff(ft, ft->curdir);
+
+	if ((*f)->dirbuffc <= 0) {
+		return 0;
+	}
+
 	updcursel(ft);
+
+	return 1;
 }
 
 void upddbuff(fb *f, char *path) {
 	char **dirs;
 
-	f->dirbuffc = absscandir(path, &dirs, alphadirsort) - 1; // -1 to omit '.'
+	int dcount = absscandir(path, &dirs, alphadirsort);
+	f->dirbuffc = dcount - 1; // we're ommiting "."
 	f->dirbuff = realloc(f->dirbuff, f->dirbuffc * sizeof(char*));
 
-	for (int i = 0; i < f->dirbuffc; i++) {
-		f->dirbuff[i] = dirs[i+1]; // i+1 to omit '.'
+	for (int i = 0, i2 = 0; i2 < dcount; i++, i2++) {
+		if (strcmp(basename(dirs[i2]), ".") == 0) {
+			i--;
+			continue;
+		}
+
+		f->dirbuff[i] = dirs[i2];
 	}
 
 	f->t->cury = 0;
@@ -63,7 +76,11 @@ void updwrkdir(fb *f, char *path) {
 	memcpy(f->wrkdir, path, strlen(path)+1);
 }
 
-void chgdir(fb *f, char *path) {
+int chgdir(fb *f, char *path) {
+	if (!opendir(path)) {
+		return 0;
+	}
+
 	if (path[strlen(path) - 1] == '.' && path[strlen(path) - 2] == '.') {
 		updcurdir(f, dirname(f->curdir));
 	} else if (path[strlen(path) - 1] == '.'){
@@ -73,6 +90,8 @@ void chgdir(fb *f, char *path) {
 	}
 		
 	upddbuff(f, f->curdir);
+
+	return 1;
 }
 
 void lscurdir(fb *f) {	

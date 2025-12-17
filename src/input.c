@@ -36,7 +36,9 @@ char handleinput(fb *f, char in) {
 void handlesel(fb *f) {
 
 	if (getntype(f->cursel) == S_IFDIR) { 
-		chgdir(f, f->cursel);
+		if (! chgdir(f, f->cursel)) {
+			return;
+		}
 	} else {
 		openapp(f->cursel);
 	}
